@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreCustomerRequest;
 use App\Http\Requests\V1\UpdateCustomerRequest;
 use App\Http\Resources\V1\CustomerResource;
+use illuminate\Validation\Rule;
 use App\Http\Resources\V1\CustomerCollection;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,6 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        return "hi";
         return new CustomerResource(Customer::create($request->all()));
     }
 

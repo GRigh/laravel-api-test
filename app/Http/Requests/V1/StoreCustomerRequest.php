@@ -4,6 +4,10 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use illuminate\Validation\Rule;
+use illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Validation\Rules\In;
 
 class StoreCustomerRequest extends FormRequest
 {
@@ -24,7 +28,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'type' => ['required', Rule::in(['I', 'B', 'i', 'b'])],
+            'type' => ['required', $this->in(['B', 'b', 'I', 'i'])],
             'email' => ['required', 'email'],
             'address' => ['required'],
             'city' => ['required'],
@@ -37,5 +41,14 @@ class StoreCustomerRequest extends FormRequest
         $this->merge([
             'postal_code' => $this->postalCode
         ]);
+    }
+
+    public static function in($values)
+    {
+        if ($values instanceof Arrayable) {
+            $values = $values->toArray();
+        }
+
+        return new In(is_array($values) ? $values : func_get_args());
     }
 }
